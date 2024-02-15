@@ -1,0 +1,234 @@
+ $query = model_un::query();
+        $perPage = 3;
+        $page = $request->input('page', 1);
+        $search = $request->input('search');
+        if ($search) {
+         $query->whereRaw("titre_sondage LIKE '%".$search. "%'");   
+        }
+     
+        $total = $query->count();
+        $result = $query->offset(($page -1) * $perPage)->limit($perPage)->get();
+     
+        return response()->json([
+            'status_code' => 200,
+            'status_message'=> 'liste a été affiché avec succès',
+            'current_page' =>  $page,
+            'laste_page'=>ceil($total/$perPage),
+            'items' => $result
+           ]);
+
+
+
+
+
+
+
+        //Model_Controller
+
+        <?php
+namespace App\Http\Controllers;
+use App\Models\model_un;
+use App\Http\Requests\Creer_SondageRequest;
+use App\Http\Requests\EditeSondageRequest;
+use Exception;
+class Model_Controller extends Controller
+{
+    public function creatSondageform(Creer_SondageRequest $request)
+    {
+
+    //     $request->validate([
+    //     'titre_sondage'=>'required',
+    //     'question1'=>'required',
+    //     'reponse_opt_1'=>'required',
+    //     'reponse_opt_2'=>'required',
+    //     'question2'=>'required',
+    //     'question3'=>'required',
+    //     'reponse_opt_3'=>'required',
+    //     'reponse_opt_4'=>'required',
+    //     'reponse_opt_5'=>'required',
+    //     'question4'=>'required',
+    //     'question5'=>'required',
+    //    ]);
+    
+
+
+      try {
+        $Model_un = new model_un();
+        $Model_un->titre_sondage = $request->titre_sondage;
+        $Model_un->question1 = $request->question1;
+        $Model_un->reponse_opt_1 = $request->reponse_opt_1;
+        $Model_un->reponse_opt_2 = $request->reponse_opt_2;
+        $Model_un->question2 = $request->question2;
+        $Model_un->question3 = $request->question3;
+        $Model_un->reponse_opt_3 = $request->reponse_opt_3;
+        $Model_un->reponse_opt_4 = $request->reponse_opt_4;
+        $Model_un->reponse_opt_5 = $request->reponse_opt_5;
+        $Model_un->question4 = $request->question4;
+        $Model_un->question5 = $request->question5;
+        $Model_un->save();
+ 
+        return response()->json([
+         'status_code' => 200,
+         'status_message'=> 'le Post a été ajouter',
+         'data' => $Model_un
+        ]);
+       } catch (Exception $e) {
+        return response()->json($e);
+      }
+      
+    //    $Model_un->titre_sondage = 'titre_sondage';
+    //    $Model_un->question1 = 'question1';
+    //    $Model_un->reponse_opt_1 = 'reponse_opt_1';
+    //    $Model_un->reponse_opt_2 = 'reponse_opt_2';
+    //    $Model_un->question2 = 'question2';
+    //    $Model_un->question3 = 'question3';
+    //    $Model_un->reponse_opt_3 = 'reponse_opt_3';
+    //    $Model_un->reponse_opt_4 = 'reponse_opt_4';
+    //    $Model_un->reponse_opt_5 = 'reponse_opt_5';
+    //    $Model_un->question4 = 'question4';
+    //    $Model_un->question5 = 'question5';
+
+    //    $Model_un->titre_sondage = $request->input('titre_sondage');
+    //    $Model_un->question1 = $request->input('question1');
+    //    $Model_un->reponse_opt_1 = $request->input('reponse_opt_1');
+    //    $Model_un->reponse_opt_2 = $request->input('reponse_opt_2');
+    //    $Model_un->question2 = $request->input('question2');
+    //    $Model_un->question3 = $request->input('question3');
+    //    $Model_un->reponse_opt_3 = $request->input('reponse_opt_3');
+    //    $Model_un->reponse_opt_4 = $request->input('reponse_opt_4');
+    //    $Model_un->reponse_opt_5 = $request->input('reponse_opt_5');
+    //    $Model_un->question4 = $request->input('question4');
+    //    $Model_un->question5 = $request->input('question5');
+      
+    //    return $Model_un;
+
+   }
+
+
+
+
+
+   function affiche_modul_un()
+   {
+
+    try {
+        return response()->json([
+            'status_code' => 200,
+            'status_message'=> 'liste a été affiché avec succès',
+            'data' =>  model_un::all();
+           ]);
+
+    } catch (Exception $e) {
+        return response()->json($e);
+    }
+       
+   }
+   function update_form_sondage(EditeSondageRequest $request ,model_un $Model_un)
+   {
+    try {
+       // $Model_un = model_un::find($id);
+    // dd ($Model_un);
+    $Model_un->titre_sondage = $request->titre_sondage;
+    $Model_un->question1 = $request->question1;
+    $Model_un->reponse_opt_1 = $request->reponse_opt_1;
+    $Model_un->reponse_opt_2 = $request->reponse_opt_2;
+    $Model_un->question2 = $request->question2;
+    $Model_un->question3 = $request->question3;
+    $Model_un->reponse_opt_3 = $request->reponse_opt_3;
+    $Model_un->reponse_opt_4 = $request->reponse_opt_4;
+    $Model_un->reponse_opt_5 = $request->reponse_opt_5;
+    $Model_un->question4 = $request->question4;
+    $Model_un->question5 = $request->question5;
+    $Model_un->save();
+
+    return response()->json([
+        'status_code' => 200,
+        'status_message'=> 'le Post a été modifié',
+        'data' => $Model_un
+       ]);
+    } catch (Exception $e) {
+        return response()->json($e);
+    }
+   }
+   
+   function delete_form_sondage(model_un $Model_un)
+   {
+    try {
+        $Model_un->delete();
+
+        return response()->json([
+            'status_code' => 200,
+            'status_message'=> 'le Post a été supprimé avec succès',
+            'data' => $Model_un
+           ]);
+
+    } catch (Exception $e) {
+        return response()->json($e);
+    }
+   }
+
+
+
+   //supprimé un model_sondage
+   public function destroy($id)
+   {
+       $supprime = model_un::find($id);
+       $supprime->delete();
+       return $supprime;
+   }
+
+}
+//API
+
+
+<?php
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\SondageController;
+use App\Http\Controllers\Model_Controller;
+/*.
+|--------------------------------------------------------------------------
+| API Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register API routes for your application. These
+| routes are loaded by the RouteServiceProvider and all of them will
+| be assigned to the "api" middleware group. Make something great!
+|
+*/
+
+Route::post('register', [AuthController::class, 'register']);
+Route::post('login', [AuthController::class, 'login']);
+
+
+//Envoyer le formulaire sondage
+Route::post('soumettreSondage', [SondageController::class, 'creatSondage']);
+
+
+//Envoyer pour creer un formulaire de sondage
+Route::post('creer_form_sondage', [Model_Controller::class, 'creatSondageform']);
+
+//Envoyer pour editer un formulaire de sondage
+Route::put('editer_form_sondage/{model_un}', [Model_Controller::class, 'update_form_sondage']);
+
+//Supprimer un formulaire de sondage
+Route::delete('supprimer_form_sondage/{model_un}', [Model_Controller::class, 'delete_form_sondage']);
+
+//Affiche module_un
+Route::get('affiche_modul', [Model_Controller::class, 'affiche_modul_un']);
+
+//Affiche reponse_module_un
+Route::get('affiche_reponse_modul', [SondageController::class, 'affiche_reponse_modul_un']);
+
+
+Route::middleware('auth:sanctum')->group(function(){
+
+Route::get('/user', function(Request $request){
+ return $request->user();
+});
+
+});
+
+Route::get('supprime_model_un', [Model_Controller::class, 'destroy']);
